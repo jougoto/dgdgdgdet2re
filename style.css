@@ -1,0 +1,381 @@
+:root {
+    /* Цветовая схема */
+    --primary-bg: #0f172a;
+    --card-bg: #1e293b;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-green: #10b981;
+    --accent-red: #ef4444;
+    --accent-amber: #f59e0b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --card-radius: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.analytics-app {
+    width: 100%;
+    max-width: 420px;
+    background-color: var(--card-bg);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+}
+
+.app-header {
+    padding: 18px 24px;
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.app-title {
+    font-size: 16px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+/* Секция настроек */
+.settings-section {
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.settings-section h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.market-tabs {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.market-tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.market-tab.active {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.modern-select {
+    width: 100%;
+    padding: 14px 16px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 16px;
+    transition: var(--transition);
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+.modern-select option {
+    background-color: #1e293b;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 16px;
+}
+
+.modern-select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.modern-select option:checked {
+    background-color: var(--accent-blue);
+    color: white;
+    font-weight: 600;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
+}
+
+.primary-btn:disabled {
+    background: #4b5563;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Секция загрузки */
+.loading-section {
+    padding: 60px 24px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-width: 320px;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(59, 130, 246, 0.2);
+    border-top: 4px solid var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-section h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.loading-section p {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+/* Секция сигнала */
+.signal-section {
+    padding: 32px 24px;
+    display: none;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.signal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.signal-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    letter-spacing: 0.5px;
+}
+
+.signal-time {
+    font-size: 15px;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.signal-content {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.signal-pair {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+.signal-action {
+    font-size: 52px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 10px 0;
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.signal-action.buy {
+    color: var(--accent-green);
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.signal-action.sell {
+    color: var(--accent-red);
+    text-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+.signal-action::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.signal-action.buy::after {
+    background: linear-gradient(90deg, transparent 0%, var(--accent-green) 50%, transparent 100%);
+}
+
+.signal-action.sell::after {
+    background: linear-gradient(90deg, transparent 0%, var(--accent-red) 50%, transparent 100%);
+}
+
+.cooldown-timer {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.timer-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.timer-value {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-amber);
+}
+
+.app-footer {
+    padding: 20px 24px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--border-color);
+}
+
+.copyright {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .app-header {
+        padding: 16px 20px;
+    }
+    
+    .settings-section, .signal-section {
+        padding: 24px 20px;
+        gap: 20px;
+    }
+    
+    .signal-pair {
+        font-size: 24px;
+    }
+    
+    .signal-action {
+        font-size: 42px;
+    }
+    
+    .timer-value {
+        font-size: 24px;
+    }
+    
+    .modern-select, .primary-btn {
+        padding: 14px;
+    }
+}
