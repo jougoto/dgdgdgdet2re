@@ -1,5 +1,4 @@
 :root {
-    /* Цветовая схема */
     --primary-bg: #0f172a;
     --card-bg: #1e293b;
     --accent-blue: #3b82f6;
@@ -77,9 +76,14 @@ body {
     opacity: 0.9;
 }
 
+/* Основной контент */
+.main-content {
+    padding: 24px;
+    min-height: 300px;
+}
+
 /* Секция настроек */
 .settings-section {
-    padding: 32px 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -192,62 +196,20 @@ body {
     box-shadow: none;
 }
 
-/* Секция загрузки */
-.loading-section {
-    padding: 60px 24px;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.loading-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    max-width: 320px;
-}
-
-.spinner {
-    width: 60px;
-    height: 60px;
-    border: 4px solid rgba(59, 130, 246, 0.2);
-    border-top: 4px solid var(--accent-blue);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.loading-section h3 {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.loading-section p {
-    font-size: 16px;
-    color: var(--text-secondary);
-}
-
 /* Секция сигнала */
 .signal-section {
-    padding: 32px 24px;
-    display: none;
-    flex-direction: column;
-    gap: 28px;
+    padding: 20px 24px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-color);
+    min-height: 260px;
 }
 
 .signal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -267,18 +229,23 @@ body {
 .signal-content {
     text-align: center;
     padding: 20px 0;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .signal-pair {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 600;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     color: var(--text-primary);
     letter-spacing: 0.5px;
+    min-height: 40px;
 }
 
 .signal-action {
-    font-size: 52px;
+    font-size: 40px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -286,6 +253,8 @@ body {
     position: relative;
     display: inline-block;
     padding: 0 20px;
+    color: var(--text-secondary);
+    min-height: 60px;
 }
 
 .signal-action.buy {
@@ -298,23 +267,42 @@ body {
     text-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
 }
 
-.signal-action::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    border-radius: 2px;
+/* Индикатор загрузки внутри сигнала */
+.signal-loading {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 0;
+    min-height: 150px;
 }
 
-.signal-action.buy::after {
-    background: linear-gradient(90deg, transparent 0%, var(--accent-green) 50%, transparent 100%);
+.signal-loading .loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
-.signal-action.sell::after {
-    background: linear-gradient(90deg, transparent 0%, var(--accent-red) 50%, transparent 100%);
+.signal-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(59, 130, 246, 0.2);
+    border-top: 3px solid var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.signal-loading h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.signal-loading p {
+    font-size: 14px;
+    color: var(--text-secondary);
 }
 
 .cooldown-timer {
@@ -322,7 +310,7 @@ body {
     border-radius: 12px;
     padding: 16px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
     border: 1px solid var(--border-color);
 }
 
@@ -333,14 +321,14 @@ body {
 }
 
 .timer-value {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--accent-amber);
 }
 
 .app-footer {
-    padding: 20px 24px;
+    padding: 16px 24px;
     background-color: rgba(0, 0, 0, 0.2);
     border-top: 1px solid var(--border-color);
 }
@@ -352,30 +340,67 @@ body {
     line-height: 1.5;
 }
 
+/* Анимация спиннера */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /* Адаптивность */
 @media (max-width: 480px) {
     .app-header {
         padding: 16px 20px;
     }
     
-    .settings-section, .signal-section {
-        padding: 24px 20px;
-        gap: 20px;
+    .signal-section {
+        padding: 16px 20px;
+        min-height: 240px;
     }
     
     .signal-pair {
-        font-size: 24px;
+        font-size: 22px;
     }
     
     .signal-action {
-        font-size: 42px;
+        font-size: 36px;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+    
+    .settings-section {
+        gap: 20px;
     }
     
     .timer-value {
-        font-size: 24px;
+        font-size: 22px;
     }
     
     .modern-select, .primary-btn {
         padding: 14px;
     }
+    
+    .signal-loading .spinner {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .signal-loading h3 {
+        font-size: 16px;
+    }
+    
+    .signal-loading p {
+        font-size: 13px;
+    }
+}
+
+.primary-btn.timer {
+    background: linear-gradient(to right, #f59e0b, #fbbf24);
+}
+
+.primary-btn.timer:hover {
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
 }

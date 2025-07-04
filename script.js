@@ -11,18 +11,18 @@ const state = {
 // Элементы интерфейса
 const elements = {
     settingsSection: document.querySelector('.settings-section'),
-    loadingSection: document.querySelector('.loading-section'),
-    signalSection: document.querySelector('.signal-section'),
     getSignalBtn: document.getElementById('get-signal-btn'),
     signalPair: document.getElementById('signal-pair'),
     signalAction: document.getElementById('signal-action'),
     signalTimestamp: document.getElementById('signal-timestamp'),
     cooldownTimer: document.getElementById('cooldown-timer'),
     currencyPair: document.getElementById('currency-pair'),
-    timeframe: document.getElementById('timeframe')
+    timeframe: document.getElementById('timeframe'),
+    signalContent: document.getElementById('signal-content'),
+    signalLoading: document.getElementById('signal-loading')
 };
 
-// Списки инструментов (USD/MVR OTC удален)
+// Списки инструментов
 const instruments = {
     standard: [
         "EUR/USD", "BTC/USD", "ETH/USD", "USD/RUB", 
@@ -79,6 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Активируем вкладку Standard
     document.querySelector('.market-tab[data-market="standard"]').classList.add('active');
     document.querySelector('.market-tab[data-market="otc"]').classList.remove('active');
+    
+    // Установить начальные значения сигнала
+    resetSignalDisplay();
 });
 
 // Начать процесс получения сигнала
@@ -86,40 +89,42 @@ function startSignalProcess() {
     // Проверка cooldown
     if (state.cooldown > Date.now()) return;
     
-    // Переход на экран загрузки
-    showScreen('loading');
-    
-    // Установка текущей пары и времени
-    elements.signalPair.textContent = state.currentPair;
+    // Устанавливаем время в сигнале
     elements.signalTimestamp.textContent = getCurrentTime();
+    
+    // Показываем индикатор загрузки в области сигнала
+    showSignalLoading();
     
     // Фиксированная задержка в 1 секунду для анализа
     setTimeout(() => {
         // Генерация случайного сигнала
         const isBuy = Math.random() > 0.5;
+        
+        // Обновляем секцию сигнала
+        elements.signalPair.textContent = state.currentPair;
         elements.signalAction.textContent = isBuy ? 'Buy' : 'Sell';
         elements.signalAction.className = `signal-action ${isBuy ? 'buy' : 'sell'}`;
         
-        // Переход на экран сигнала
-        showScreen('signal');
+        // Скрываем индикатор загрузки
+        hideSignalLoading();
         
         // Установка cooldown
         startCooldown();
     }, 1000);
 }
 
-// Показать определенный экран
-function showScreen(screen) {
-    state.currentScreen = screen;
-    
-    elements.settingsSection.classList.toggle('active', screen === 'settings');
-    elements.loadingSection.style.display = screen === 'loading' ? 'flex' : 'none';
-    elements.signalSection.style.display = screen === 'signal' ? 'flex' : 'none';
-    
-    if (screen === 'settings') {
-        // Проверить cooldown
-        checkCooldown();
-    }
+// Показать загрузку в области сигнала
+function showSignalLoading() {
+    elements.signalContent.style.display = 'none';
+    elements.signalLoading.style.display = 'flex';
+    elements.cooldownTimer.style.display = 'none';
+}
+
+// Скрыть загрузку в области сигнала
+function hideSignalLoading() {
+    elements.signalContent.style.display = 'flex';
+    elements.signalLoading.style.display = 'none';
+    elements.cooldownTimer.style.display = 'block';
 }
 
 // Обновить инструменты при смене рынка
@@ -153,8 +158,31 @@ function startCooldown() {
         clearInterval(state.cooldownInterval);
     }
     
-    // Точный таймер с немедленным первым обновлением
-    state.cooldownInterval = setInterval(updateCooldownTimer, 1000);
+    // Точный таймер
+    state.cooldownInterval = setInterval(() => {
+        updateCooldownTimer();
+        updateCooldownButton();
+        
+        // Сбросить сигнал после истечения времени
+        if (state.cooldown <= Date.now()) {
+            resetSignalDisplay();
+        }
+    }, 1000);
+}
+
+// Обновить кнопку с таймером
+function updateCooldownButton() {
+    const now = Date.now();
+    const remaining = Math.max(0, state.cooldown - now);
+    const seconds = Math.ceil(remaining / 1000);
+    
+    if (seconds > 0) {
+        elements.getSignalBtn.textContent = `Get Signal (${seconds}s)`;
+        elements.getSignalBtn.disabled = true;
+    } else {
+        elements.getSignalBtn.textContent = 'Get Signal';
+        elements.getSignalBtn.disabled = false;
+    }
 }
 
 // Обновить таймер cooldown
@@ -170,19 +198,6 @@ function updateCooldownTimer() {
     
     if (remaining <= 0) {
         clearInterval(state.cooldownInterval);
-        showScreen('settings');
-    }
-}
-
-// Проверить cooldown при входе в настройки
-function checkCooldown() {
-    if (state.cooldown > Date.now()) {
-        elements.getSignalBtn.disabled = true;
-        elements.getSignalBtn.textContent = 'Processing...';
-        startCooldown(); // Продолжить отсчет
-    } else {
-        elements.getSignalBtn.disabled = false;
-        elements.getSignalBtn.textContent = 'Get Signal';
     }
 }
 
@@ -205,4 +220,15 @@ function parseTimeframe(timeframe) {
 function getCurrentTime() {
     const now = new Date();
     return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+}
+
+// Сбросить отображение сигнала
+function resetSignalDisplay() {
+    elements.signalPair.textContent = '--';
+    elements.signalAction.textContent = '--';
+    elements.signalAction.className = 'signal-action';
+    elements.signalTimestamp.textContent = '--:--:--';
+    elements.cooldownTimer.textContent = '--:--';
+    // Убедимся, что индикатор загрузки скрыт
+    hideSignalLoading();
 }
