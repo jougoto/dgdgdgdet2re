@@ -1,11 +1,11 @@
 // Состояние приложения
 const state = {
-    currentScreen: 'settings', 
-    cooldown: 0,
-    cooldownInterval: null,
+    currentScreen: 'settings',
     currentPair: 'EUR/USD',
-    currentTimeframe: '5 seconds',
-    currentMarket: 'standard'
+    currentTimeframe: '1 minute',
+    currentMarket: 'standard',
+    cooldowns: {},
+    cooldownInterval: null
 };
 
 // Элементы интерфейса
@@ -48,21 +48,39 @@ const instruments = {
     ]
 };
 
+// Доступные таймфреймы
+const timeframes = {
+    standard: [
+        "1 minute", 
+        "3 minutes", 
+        "30 minutes", 
+        "1 hour"
+    ],
+    otc: [
+        "5 seconds", 
+        "15 seconds", 
+        "30 seconds", 
+        "1 minute", 
+        "3 minutes", 
+        "30 minutes", 
+        "1 hour"
+    ]
+};
+
 // Инициализация приложения
 document.addEventListener('DOMContentLoaded', () => {
-    // Обработчик кнопки "Get Signal"
     elements.getSignalBtn.addEventListener('click', startSignalProcess);
     
-    // Обработчики выбора
     elements.currencyPair.addEventListener('change', (e) => {
         state.currentPair = e.target.value;
+        updateCooldownDisplay();
     });
     
     elements.timeframe.addEventListener('change', (e) => {
         state.currentTimeframe = e.target.value;
+        updateCooldownDisplay();
     });
     
-    // Обработчики вкладок рынка
     document.querySelectorAll('.market-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('.market-tab').forEach(t => {
@@ -71,65 +89,133 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.classList.add('active');
             state.currentMarket = tab.dataset.market;
             updateInstruments(state.currentMarket);
+            updateTimeframes(state.currentMarket);
+            updateCooldownDisplay();
         });
     });
     
-    // Инициализация инструментов для стандартного рынка
+    // Инициализация
     updateInstruments('standard');
-    // Активируем вкладку Standard
+    updateTimeframes('standard');
     document.querySelector('.market-tab[data-market="standard"]').classList.add('active');
     document.querySelector('.market-tab[data-market="otc"]').classList.remove('active');
     
-    // Установить начальные значения сигнала
     resetSignalDisplay();
+    
+    // Запускаем интервал для обновления таймеров
+    state.cooldownInterval = setInterval(() => {
+        updateCooldownDisplay();
+    }, 1000);
 });
+
+// Обновить список таймфреймов
+function updateTimeframes(market) {
+    const tfList = timeframes[market];
+    const select = elements.timeframe;
+    
+    // Очищаем список
+    select.innerHTML = '';
+    
+    // Добавляем новые опции
+    tfList.forEach(tf => {
+        const option = document.createElement('option');
+        option.value = tf;
+        option.textContent = tf;
+        select.appendChild(option);
+    });
+    
+    // Устанавливаем текущий таймфрейм
+    if (tfList.includes(state.currentTimeframe)) {
+        select.value = state.currentTimeframe;
+    } else {
+        state.currentTimeframe = tfList[0];
+        select.value = tfList[0];
+    }
+}
 
 // Начать процесс получения сигнала
 function startSignalProcess() {
-    // Проверка cooldown
-    if (state.cooldown > Date.now()) return;
+    const key = getCurrentKey();
     
-    // Сразу устанавливаем cooldown
-    startCooldown();
+    if (isOnCooldown(key)) {
+        return;
+    }
     
-    // Устанавливаем время в сигнале
     elements.signalTimestamp.textContent = getCurrentTime();
-    
-    // Показываем индикатор загрузки в области сигнала
     showSignalLoading();
     
-    // Фиксированная задержка в 1 секунду для анализа
     setTimeout(() => {
-        // Генерация случайного сигнала
         const isBuy = Math.random() > 0.5;
         
-        // Обновляем секцию сигнала
         elements.signalPair.textContent = state.currentPair;
         elements.signalAction.textContent = isBuy ? 'Buy' : 'Sell';
         elements.signalAction.className = `signal-action ${isBuy ? 'buy' : 'sell'}`;
         
-        // Скрываем индикатор загрузки
+        startCooldown(key);
+        updateCooldownDisplay();
         hideSignalLoading();
     }, 1000);
 }
 
+// Получить уникальный ключ для текущей комбинации
+function getCurrentKey() {
+    return `${state.currentPair}|${state.currentTimeframe}`;
+}
+
+// Проверить, действует ли cooldown для комбинации
+function isOnCooldown(key) {
+    const cooldownEnd = state.cooldowns[key];
+    return cooldownEnd && cooldownEnd > Date.now();
+}
+
+// Запустить cooldown для конкретной комбинации
+function startCooldown(key) {
+    const duration = parseTimeframe(state.currentTimeframe);
+    state.cooldowns[key] = Date.now() + duration;
+}
+
+// Обновить отображение cooldown
+function updateCooldownDisplay() {
+    const key = getCurrentKey();
+    const cooldownEnd = state.cooldowns[key];
+    const now = Date.now();
+    
+    if (cooldownEnd && cooldownEnd > now) {
+        const remaining = Math.max(0, cooldownEnd - now);
+        const seconds = Math.ceil(remaining / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        
+        elements.getSignalBtn.textContent = `Get Signal (${seconds}s)`;
+        elements.getSignalBtn.disabled = true;
+        
+        elements.cooldownTimer.textContent = 
+            `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    } else {
+        elements.getSignalBtn.textContent = 'Get Signal';
+        elements.getSignalBtn.disabled = false;
+        elements.cooldownTimer.textContent = '--:--';
+    }
+}
+
 // Показать загрузку в области сигнала
 function showSignalLoading() {
-    elements.signalContent.style.display = 'none';
+    elements.signalContent.style.opacity = '0';
+    elements.signalContent.style.pointerEvents = 'none';
     elements.signalLoading.style.display = 'flex';
-    elements.cooldownTimer.style.display = 'none';
+    elements.cooldownTimer.style.visibility = 'hidden';
 }
 
 // Скрыть загрузку в области сигнала
 function hideSignalLoading() {
-    elements.signalContent.style.display = 'flex';
+    elements.signalContent.style.opacity = '1';
+    elements.signalContent.style.pointerEvents = 'auto';
     elements.signalLoading.style.display = 'none';
-    elements.cooldownTimer.style.display = 'block';
+    elements.cooldownTimer.style.visibility = 'visible';
 }
 
 // Обновить инструменты при смене рынка
 function updateInstruments(market) {
-    // Обновить опции
     elements.currencyPair.innerHTML = '';
     instruments[market].forEach(pair => {
         const option = document.createElement('option');
@@ -138,70 +224,8 @@ function updateInstruments(market) {
         elements.currencyPair.appendChild(option);
     });
     
-    // Установить текущую пару
     state.currentPair = instruments[market][0];
     elements.currencyPair.value = state.currentPair;
-}
-
-// Запустить cooldown
-function startCooldown() {
-    // Рассчитать длительность cooldown в миллисекундах
-    const duration = parseTimeframe(state.currentTimeframe);
-    
-    // Установить время окончания cooldown
-    state.cooldown = Date.now() + duration;
-    
-    // Немедленно обновить кнопку
-    updateCooldownButton();
-    
-    // Запустить таймер
-    updateCooldownTimer();
-    
-    if (state.cooldownInterval) {
-        clearInterval(state.cooldownInterval);
-    }
-    
-    // Точный таймер
-    state.cooldownInterval = setInterval(() => {
-        updateCooldownTimer();
-        updateCooldownButton();
-        
-        // Сбросить сигнал после истечения времени
-        if (state.cooldown <= Date.now()) {
-            resetSignalDisplay();
-        }
-    }, 1000);
-}
-
-// Обновить кнопку с таймером
-function updateCooldownButton() {
-    const now = Date.now();
-    const remaining = Math.max(0, state.cooldown - now);
-    const seconds = Math.ceil(remaining / 1000);
-    
-    if (seconds > 0) {
-        elements.getSignalBtn.textContent = `Get Signal (${seconds}s)`;
-        elements.getSignalBtn.disabled = true;
-    } else {
-        elements.getSignalBtn.textContent = 'Get Signal';
-        elements.getSignalBtn.disabled = false;
-    }
-}
-
-// Обновить таймер cooldown
-function updateCooldownTimer() {
-    const now = Date.now();
-    const remaining = Math.max(0, state.cooldown - now);
-    const seconds = Math.ceil(remaining / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    
-    elements.cooldownTimer.textContent = 
-        `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-    
-    if (remaining <= 0) {
-        clearInterval(state.cooldownInterval);
-    }
 }
 
 // Преобразовать timeframe в миллисекунды
@@ -216,7 +240,11 @@ function parseTimeframe(timeframe) {
         return value * 60 * 1000;
     }
     
-    return 5000; // По умолчанию 5 секунд
+    if (timeframe.includes('hour')) {
+        return value * 60 * 60 * 1000;
+    }
+    
+    return 60000; // По умолчанию 1 минута
 }
 
 // Получить текущее время
@@ -232,6 +260,5 @@ function resetSignalDisplay() {
     elements.signalAction.className = 'signal-action';
     elements.signalTimestamp.textContent = '--:--:--';
     elements.cooldownTimer.textContent = '--:--';
-    // Убедимся, что индикатор загрузки скрыт
     hideSignalLoading();
 }
