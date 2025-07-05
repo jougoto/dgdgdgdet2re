@@ -34,11 +34,7 @@
                 <div class="input-group">
                     <label>Time</label>
                     <select id="timeframe" class="modern-select">
-                        <option>5 seconds</option>
-                        <option>15 seconds</option>
-                        <option>30 seconds</option>
-                        <option>1 minute</option>
-                        <option>3 minutes</option>
+                        <!-- Options will be populated by JS -->
                     </select>
                 </div>
                 
@@ -52,16 +48,18 @@
                 <div class="signal-time" id="signal-timestamp">--:--:--</div>
             </div>
             
-            <div class="signal-content" id="signal-content">
-                <div class="signal-pair" id="signal-pair">--</div>
-                <div class="signal-action" id="signal-action">--</div>
-            </div>
-            
-            <div class="signal-loading" id="signal-loading">
-                <div class="loading-content">
-                    <div class="spinner"></div>
-                    <h3>Analyzing market data...</h3>
-                    <p>Our algorithm is processing your request</p>
+            <div class="signal-display-container">
+                <div class="signal-content" id="signal-content">
+                    <div class="signal-pair" id="signal-pair">--</div>
+                    <div class="signal-action" id="signal-action">--</div>
+                </div>
+                
+                <div class="signal-loading" id="signal-loading">
+                    <div class="loading-content">
+                        <div class="spinner"></div>
+                        <h3>Analyzing market data...</h3>
+                        <p>Our algorithm is processing your request</p>
+                    </div>
                 </div>
             </div>
             
