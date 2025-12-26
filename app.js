@@ -23,7 +23,7 @@ const data = [
             },
             {
                 id: "new-account-verified",
-                q: { ru: "Я хочу продолжить на новом аккаунте, но на первом у меня верификация. Что делать?", en: "I want to continue with a new account, but I have verification on the first one. What should I do?" },
+                q: { ru: "Что если у меня уже есть верификация?", en: "What if I already have verification?" },
                 a: {
                     ru: "Чтобы пройти повторно верификацию на новом аккаунте, закройте предыдущий счет с верификацией — после этого у вас не будет проблем.",
                     en: "To re-verify your new account, close your previous verified account — after that, you will have no problems."
@@ -106,8 +106,8 @@ const data = [
                 id: "amount-time",
                 q: { ru: "Сумма и время сделки. Как выбрать?", en: "Trade amount and time. How to choose?" },
                 a: {
-                    ru: `Рекомендую попробовать каждое время и выбрать подходящий для себя.<ul><li><p>Секунды удобны, но на них нужно входить моментально — любая задержка, и сигнал упущен.</li><li>Минуты — золотая середина у моей команды.</li></ul></p><p>Но помните: долгая задержка может привести к изменению направления в конце.</p>`,
-                    en: `I recommend trying each option and choosing the one that suits you best.<ul><li><p>Seconds are easy to use, but you have to enter them instantly — any delay and you'll miss the signal.</li><li>Minutes are the golden mean for my team.</li></ul></p><p>But remember, a long delay can lead to a change of direction at the end.</p>`
+                    ru: `Рекомендую попробовать каждое время и выбрать подходящий для себя.<ul><li><p>Секунды удобны, но на них нужно входить моментально — любая задержка, и сигнал упущен.</li><li>Минуты — золотая середина у моей команды.</li></ul></p><p>Но помните: долгая задержка может привести к изменению направления в конце.</p><p>— GTPO рекомендует выбирать сумму сделки в размере 5-10% от вашего текущего баланса.</p>`,
+                    en: `I recommend trying each option and choosing the one that suits you best.<ul><li><p>Seconds are easy to use, but you have to enter them instantly — any delay and you'll miss the signal.</li><li>Minutes are the golden mean for my team.</li></ul></p><p>But remember, a long delay can lead to a change of direction at the end.</p><p>— GTPO recommends choosing a trade amount of 5-10% of your current balance.</p>`
                 }
             },
             {
