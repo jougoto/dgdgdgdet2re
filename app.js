@@ -110,6 +110,14 @@ const data = [
                     en: `I recommend trying each option and choosing the one that suits you best.<ul><li><p>Seconds are easy to use, but you have to enter them instantly — any delay and you'll miss the signal.</li><li>Minutes are the golden mean for my team.</li></ul></p><p>But remember, a long delay can lead to a change of direction at the end.</p><p>— GTPO recommends choosing a trade amount of 5-10% of your current balance.</p>`
                 }
             },
+			{
+                id: "lose",
+                q: { ru: "Как выбрать чем торговать?", en: "How to choose a currency pair for trading?" },
+                a: {
+                    ru: `Это не так важно, главное выбрать, где процент выплат высокий (от 90%). Попробуйте каждый из них и решите, что вам больше нравится: валютные пары, криптовалюты, индексы, акции или сырьевые товары.</p>`,
+                    en: `It's not really important, the main thing is to choose where the payout percentage is high (from 90%). Try each one and decide what you like best: currency pairs, cryptocurrencies, indices, stocks, or commodities.</p>`
+                }
+            },
             {
                 id: "lose",
                 q: { ru: "Что делать при проигрыше?", en: "What should you do if you lose?" },
