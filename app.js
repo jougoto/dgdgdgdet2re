@@ -21,6 +21,14 @@ const data = [
                     en: "Create a new account. No verification required — access to the bot will be open immediately."
                 }
             },
+			{
+                id: "min-deposit",
+                q: { ru: "Страховая GTPO для ВИП клиентов", en: "GTPO Insurance for VIP Clients" },
+                a: {
+                    ru: "Чтобы сотрудничество с GTPO было для вас максимально выгодным, я ввожу страховой процент от слитого депозита.<p>▫️ 10% — от депозита $100</p><p>▫️ 15% — от депозита $250</p><p>▫️ 20% — от депозита $500</p><p>Кроме того, в будущем для ВИП-пользователей будут реализованы случайные выигрыши при КАЖДОМ депозите.</p>",
+                    en: "To make working with GTPO as beneficial as possible for you, I’m introducing an insurance percentage on lost deposits.<p>▫️ 10% — from $100</p><p>▫️ 15% — from $250</p><p>▫️ 20% — from $500</p><p>In addition, in the future, VIP users will have access to random bonuses on every deposit.</p><p>This offer is lifetime and available only to traders who register through me. Funds are transferred to your Pocket Option account.</p>"
+                }
+            },
             {
                 id: "new-account-verified",
                 q: { ru: "Что если у меня уже есть верификация?", en: "What if I already have verification?" },
