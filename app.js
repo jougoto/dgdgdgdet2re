@@ -40,8 +40,9 @@ const data = [
             {
                 id: "private-group",
                 q: { ru: "Смогу ли я торговать в моей стране. Мой часовой пояс подходит?", en: "Will I be able to trade in my country? Is my time zone suitable?" },
-                a: { ru: "Да, pocket option работает во множестве стран. Часовой пояс не ВАЖЕН для торговли с ботом - вы можете торговать с любой точки мира и в любое время суток.", 
-				     en: "Yes, pocket option operates in many countries. The time zone is NOT IMPORTANT when trading with the bot — you can trade from anywhere in the world at any time of day." }
+                a: { 
+					 ru: "Да, pocket option работает во множестве стран. Часовой пояс не ВАЖЕН для торговли с ботом - вы можете торговать с любой точки мира и в любое время суток.", 
+				     en: "Yes, pocket option operates in many countries. The time zone is NOT IMPORTANT when trading with the bot — you can trade from anywhere in the world at any time of day."
             },
             {
                 id: "experience",
