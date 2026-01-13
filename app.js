@@ -37,6 +37,7 @@ const data = [
                     en: "Any amount. You can start with even a small deposit — the bot is configured for effective balance growth."
                 }
             },
+			
             {
                 id: "experience",
                 q: { ru: "Нужен ли опыт и знания?", en: "Is experience and knowledge necessary?" },
