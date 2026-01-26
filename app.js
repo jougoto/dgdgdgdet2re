@@ -17,7 +17,7 @@ const data = [
                 id: "have-account",
                 q: { ru: "У меня уже есть аккаунт. Что делать?", en: "I already have an account. What should I do?" },
                 a: {
-                    ru: "Создайте новый аккаунт. Верификация не нужна — доступ к боту откроется сразу.<p><ul><li> Или вы можете преобрести доступ к полной версии бота за $50, которая также будет обновляться.</li></p>",
+                    ru: "Создайте новый аккаунт. Верификация не нужна — доступ к боту откроется сразу.<p><ul><li> Или вы можете преобрести пожизненный доступ к полной версии бота за $50, которая также будет обновляться.</li></p>",
                     en: "Create a new account. No verification required — access to the bot will be open immediately.<p><ul><li> Or you can get lifetime access to the full version of the bot for $50, which will also receive updates</li></p>"
                 }
             },
