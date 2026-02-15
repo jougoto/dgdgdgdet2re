@@ -114,6 +114,14 @@ const data = [
                     en: `It's not really important, the main thing is to choose where the payout percentage is high (from 90%). Try each one and decide what you like best: currency pairs, cryptocurrencies, indices, stocks, or commodities.</p>`
                 }
             },
+			{
+                id: "lose",
+                q: { ru: "Разница между CONFIDENCE и ACCURACY", en: "Difference between CONFIDENCE and ACCURACY" },
+                a: {
+                    ru: `Уверенность = насколько система уверена в данный момент. Точность = как аналогичные сигналы показали себя в прошлом.</p>`,
+                    en: `Confidence = how confident the system is right now. Accuracy = how similar signals performed in the past.</p>`
+                }
+            },
             {
                 id: "lose",
                 q: { ru: "Что делать при проигрыше?", en: "What should you do if you lose?" },
